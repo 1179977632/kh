@@ -22,7 +22,7 @@
         <div class="course" v-for="course in courses">
           <div class="course_wapper">
             <div class="course_title">
-              <span class="course_a" @click="intoCourse(course)">{{course}}</span>
+              <span class="course_a" @click="intoCourse(course.courseId)">{{course.courseName}}</span>
               <!--<router-link class="course_a" to="/intoCourse">{{course}}</router-link>-->
             </div>
           </div>
@@ -57,20 +57,22 @@
       userInfo: state => state.userInfo
     }),
     methods:{
-      intoCourse(courseName){
+      intoCourse(courseId){
         let info={}
-        info.userEmail=this.userInfo.userEmail
-        info.courseName=courseName
-        this.$store.commit('localStorage_setUserCourse', info)
+        info.userId=this.userInfo.userId
+        info.receiveId=0
+        info.schoolId=this.userInfo.schoolId
+        info.courseId=courseId
+        this.$store.commit('sessionStorage_setChatInfo', info)
         this.$router.push({
           path: '/chat',
         })
       }
     },
     created(){
-      api.courseNameList('/course/namelist').then(res=>{
+      api.courseList('/course/list').then(res=>{
         console.log(res)
-        this.courses=res.data
+        this.courses=res.data.data
       }).catch(err=>{
         console.log(err)
       })

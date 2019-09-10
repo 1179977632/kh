@@ -6,17 +6,17 @@ Vue.use(Vuex)
 const store = new Vuex.Store({
   // 定义状态
   state: {
-    userInfo:JSON.parse(localStorage.getItem("userInfo")) || {},
-    userCourse:JSON.parse(localStorage.getItem("userCourse")) || {}
+    userInfo:JSON.parse(sessionStorage.getItem("userInfo")) || {},
+    chatInfo:JSON.parse(sessionStorage.getItem("chatInfo")) || {}
   },
   mutations: {
-    localStorage_setUserInfo(state,val){
-      localStorage.setItem('userInfo', JSON.stringify(val)); //将传递的数据先保存到localStorage中
+    sessionStorage_setUserInfo(state,val){
+      sessionStorage.setItem('userInfo', JSON.stringify(val)); //将传递的数据先保存到sessionStorage中
       state.userInfo = val;// 之后才是修改state中的状态
     },
-    localStorage_setUserCourse(state, val){
-      localStorage.setItem('userCourse', JSON.stringify(val)); //将传递的数据先保存到localStorage中
-      state.userCourse = val;// 之后才是修改state中的状态
+    sessionStorage_setChatInfo(state, val){
+      sessionStorage.setItem('chatInfo', JSON.stringify(val)); //将传递的数据先保存到sessionStorage中
+      state.chatInfo = val;// 之后才是修改state中的状态
     }
   }
 })

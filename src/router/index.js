@@ -1,11 +1,11 @@
 import Vue from 'vue'
 import Router from 'vue-router'
-import {getCookie} from "../utils/cookie";
 import Home from '../components/loginAndRegister/Home'
 import Load from '../components/loginAndRegister/Load'
 import Login from '../components/loginAndRegister/Login'
 import Register from '../components/loginAndRegister/Register'
 import Course from '../components/mainWindow/course/Course'
+import UserData from '../components/mainWindow/UserData'
 import Chat from '../components/mainWindow/course/Chat'
 import Question from '../components/mainWindow/course/Question'
 
@@ -43,6 +43,14 @@ const vueRouter = new Router({
           component: Course
         },
         {
+          path: '/userdata',
+          name: 'UserData',
+          meta: {
+            requireAuth: true // 添加该字段，表示进入这个路由是需要登录的
+          },
+          component: UserData
+        },
+        {
           path: '/chat',
           name: 'Chat',
           meta: {
@@ -71,7 +79,7 @@ vueRouter.beforeEach((to, from, next) => {//beforeEach是router的钩子函数�
     document.title = to.meta.title
   }
   if (to.meta.requireAuth) {  // 判断该路由是否需要登录权限
-    if (getCookie("userEmail") != null) {  // 通过vuex state获取当前的token是否存在
+    if (sessionStorage.getItem("userInfo") != null) {  // 通过vuex state获取当前的token是否存在
       next();
     } else {
       next({

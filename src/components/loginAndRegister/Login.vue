@@ -15,7 +15,6 @@
 <script>
   import khHeader from '../KhHeader'
   import api from '../../utils/api'
-  import {setCookie} from "../../utils/cookie";
   import {Toast} from 'mint-ui';
 
   export default {
@@ -42,10 +41,8 @@
       login(){
         if(this.emailState === 'success'&&this.passwordState === 'success'){
           api.login('/user/login',this.userFrom).then(res=>{
-            delete res.data.userPassword
-            this.$store.commit('localStorage_setUserInfo', res.data)
+            this.$store.commit('sessionStorage_setUserInfo', res.data.data)
             Toast({ message: '登录成功',duration: 2000 })
-            setCookie('userEmail',this.userFrom.userEmail)
             this.$router.push({
               path:'/course',
             })
@@ -54,16 +51,16 @@
           })
         }
       },
-      isEmail(str){
+      isEmail(email){
         var re=/^\w+((-\w+)|(\.\w+))*\@[A-Za-z0-9]+((\.|-)[A-Za-z0-9]+)*\.[A-Za-z0-9]+$/;
-        if (re.test(str) != true) {
+        if (re.test(email) != true) {
           this.emailState = 'error'
         }else{
           this.emailState = 'success'
         }
       },
-      isValidLength(chars, len) {
-        if (chars.length < len) {
+      isValidLength(password, len) {
+        if (password.length < len) {
           this.passwordState = 'error'
         }else {
           this.passwordState = 'success'
